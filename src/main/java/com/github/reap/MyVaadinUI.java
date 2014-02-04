@@ -9,7 +9,7 @@ import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-@Theme("mytheme")
+@Theme("reindeer")
 @SuppressWarnings("serial")
 public class MyVaadinUI extends UI
 {
@@ -21,8 +21,8 @@ public class MyVaadinUI extends UI
 
     @Override
     protected void init(VaadinRequest request) {
-        
-        ApplicationFormPresenter presenter = new ApplicationFormPresenter(new ApplicationFormViewImpl(), new ApplicationFormModel());
+        ApplicationStorage storage = null;
+        ApplicationFormPresenter presenter = new ApplicationFormPresenter(new ApplicationFormViewImpl(), storage);
         
         
         final VerticalLayout layout = new VerticalLayout();

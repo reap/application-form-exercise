@@ -11,6 +11,8 @@ import org.testng.annotations.Test;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 
 public class ApplicationFormPresenterTest {
 
@@ -18,6 +20,8 @@ public class ApplicationFormPresenterTest {
     ApplicationFormView view;
     @Mock
     ApplicationFormModel model;
+    
+    @Mock ApplicationStorage storage;
     
     @Mock ValueChangeEvent firstNameFieldChangeEvent;
     @Mock Property<String> firstNameFieldProperty;
@@ -27,20 +31,27 @@ public class ApplicationFormPresenterTest {
     @Mock Property<Gender> genderFieldProperty;
     @Mock ValueChangeEvent reasonForApplyingFieldChangeEvent;
     @Mock Property<String> reasonForApplyingFieldProperty;
+    @Mock ClickEvent submitButtonClickEvent;
 
     @Captor ArgumentCaptor<ValueChangeListener> genderChangeListenerCaptor;
     @Captor ArgumentCaptor<ValueChangeListener> lastNameChangeListenerCaptor;
     @Captor ArgumentCaptor<ValueChangeListener> firstNameChangeListenerCaptor;
     @Captor ArgumentCaptor<ValueChangeListener> reasonForApplyingChangeListenerCaptor;
-    
+    @Captor ArgumentCaptor<ClickListener> SubmitButtonClickListenerCaptor;
+
     @BeforeMethod public void initMocks() {
         MockitoAnnotations.initMocks(this);
+        
+        new ApplicationFormPresenter(view, storage) {
+            @Override
+            protected ApplicationFormModel createNewModel() {
+                return model;
+            }
+        };
     }
     
     @Test
     public void firstNameIsStoredToModelWhenItChanges() {
-        new ApplicationFormPresenter(view, model);
-        
         Mockito.verify(view).addFirstNameFieldChangeListener(firstNameChangeListenerCaptor.capture());
         Mockito.when(firstNameFieldChangeEvent.getProperty()).thenReturn(firstNameFieldProperty);
         Mockito.when(firstNameFieldProperty.getValue()).thenReturn("Jaska");
@@ -51,8 +62,6 @@ public class ApplicationFormPresenterTest {
 
     @Test
     public void lastNameIsStoredToModelWhenItChanges() {
-        new ApplicationFormPresenter(view, model);
-        
         Mockito.verify(view).addLastNameFieldChangeListener(lastNameChangeListenerCaptor.capture());
         Mockito.when(lastNameFieldChangeEvent.getProperty()).thenReturn(lastNameFieldProperty);
         Mockito.when(lastNameFieldProperty.getValue()).thenReturn("Jokunen");
@@ -63,8 +72,6 @@ public class ApplicationFormPresenterTest {
 
     @Test
     public void genderIsStoredToModelWhenItChanges() {
-        new ApplicationFormPresenter(view, model);
-        
         Mockito.verify(view).addGenderFieldChangeListener(genderChangeListenerCaptor.capture());
         Mockito.when(genderFieldChangeEvent.getProperty()).thenReturn(genderFieldProperty);
         Mockito.when(genderFieldProperty.getValue()).thenReturn(Gender.MALE);
@@ -75,13 +82,18 @@ public class ApplicationFormPresenterTest {
 
     @Test
     public void reasonForApplyingIsStoredToModelWhenItChanges() {
-        new ApplicationFormPresenter(view, model);
-        
         Mockito.verify(view).addReasonForApplyingFieldChangeListener(reasonForApplyingChangeListenerCaptor.capture());
         Mockito.when(reasonForApplyingFieldChangeEvent.getProperty()).thenReturn(reasonForApplyingFieldProperty);
         Mockito.when(reasonForApplyingFieldProperty.getValue()).thenReturn("koska sillan alla on kylmää...");
         
         reasonForApplyingChangeListenerCaptor.getValue().valueChange(reasonForApplyingFieldChangeEvent);
         Mockito.verify(model).setReasonForApplying("koska sillan alla on kylmää...");
+    }
+    
+    @Test public void whenSubmitButtonIsClickedModelIsStoredToStorage() {
+        Mockito.verify(view).addSubmitButtonClickListener(SubmitButtonClickListenerCaptor.capture());
+        SubmitButtonClickListenerCaptor.getValue().buttonClick(submitButtonClickEvent);
+        
+        Mockito.verify(storage).save(Mockito.same(model));
     }
 }

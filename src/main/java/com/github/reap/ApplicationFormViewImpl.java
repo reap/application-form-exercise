@@ -1,17 +1,15 @@
 package com.github.reap;
 
-import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
-import com.vaadin.data.Validator;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
 
 public class ApplicationFormViewImpl extends CustomComponent implements ApplicationFormView {
 
@@ -19,10 +17,12 @@ public class ApplicationFormViewImpl extends CustomComponent implements Applicat
     private TextField lastNameField;
     private ComboBox genderField;
     private TextArea reasonForApplyingField;
+    private Button submitButton;
 
     public ApplicationFormViewImpl() {
         Panel rootPanel = new Panel();
         FormLayout layout = new FormLayout();
+        layout.setSpacing(true);
         rootPanel.setContent(layout);
         
         firstNameField = new TextField("First name");
@@ -46,6 +46,10 @@ public class ApplicationFormViewImpl extends CustomComponent implements Applicat
         layout.addComponent(lastNameField);
         layout.addComponent(genderField);
         layout.addComponent(reasonForApplyingField);
+        
+        submitButton = new Button("Send application");
+        layout.addComponent(submitButton);
+
         
         setCompositionRoot(rootPanel);
     }
@@ -74,4 +78,10 @@ public class ApplicationFormViewImpl extends CustomComponent implements Applicat
     public void addReasonForApplyingFieldChangeListener(ValueChangeListener listener) {
         reasonForApplyingField.addValueChangeListener(listener);
     }
+    
+    @Override
+    public void addSubmitButtonClickListener(ClickListener listener) {
+        submitButton.addClickListener(listener);
+    }
+
 }
