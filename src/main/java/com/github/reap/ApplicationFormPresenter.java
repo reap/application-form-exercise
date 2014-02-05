@@ -1,5 +1,6 @@
 package com.github.reap;
 
+import com.google.inject.Inject;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.ui.Button.ClickEvent;
@@ -11,6 +12,7 @@ public class ApplicationFormPresenter {
     private ApplicationFormModel model;
     private ApplicationStorage storage;
 
+    @Inject
     public ApplicationFormPresenter(ApplicationFormView view, ApplicationStorage storage) {
         this.view = view;
         this.storage = storage;
@@ -19,7 +21,7 @@ public class ApplicationFormPresenter {
     }
 
     protected ApplicationFormModel createNewModel() {
-        return model;
+        return new ApplicationFormModel();
     }
 
     private void bindPresenterToView() {
