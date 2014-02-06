@@ -1,5 +1,6 @@
-package com.github.reap;
+package com.github.reap.application.creation;
 
+import com.github.reap.application.model.Gender;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;

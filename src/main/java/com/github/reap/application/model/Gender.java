@@ -1,4 +1,4 @@
-package com.github.reap;
+package com.github.reap.application.model;
 
 public enum Gender {
     MALE("Mies"), FEMALE("Nainen");

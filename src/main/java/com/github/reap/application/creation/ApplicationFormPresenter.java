@@ -1,5 +1,8 @@
-package com.github.reap;
+package com.github.reap.application.creation;
 
+import com.github.reap.application.model.ApplicationFormModel;
+import com.github.reap.application.model.Gender;
+import com.github.reap.application.storage.ApplicationStorage;
 import com.google.inject.Inject;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;

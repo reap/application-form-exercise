@@ -4,8 +4,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import com.github.reap.ApplicationFormModel;
-import com.github.reap.ApplicationStorage;
+import com.github.reap.application.model.ApplicationFormModel;
+import com.github.reap.application.storage.ApplicationStorage;
 import com.google.inject.Inject;
 
 public class HibernateApplicationStorage implements ApplicationStorage {

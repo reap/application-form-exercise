@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.github.reap.Gender;
+import com.github.reap.application.model.Gender;
 
 @Entity
 @Table(name = "application")
