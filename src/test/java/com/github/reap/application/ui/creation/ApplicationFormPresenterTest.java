@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 import com.github.reap.application.model.ApplicationFormModel;
 import com.github.reap.application.model.Gender;
 import com.github.reap.application.storage.ApplicationStorage;
+import com.github.reap.application.ui.ApplicationStoredListener;
 import com.github.reap.application.ui.creation.ApplicationFormPresenter;
 import com.github.reap.application.ui.creation.ApplicationFormView;
 import com.vaadin.data.Property;
@@ -27,6 +28,7 @@ public class ApplicationFormPresenterTest {
     ApplicationFormModel model;
     
     @Mock ApplicationStorage storage;
+    @Mock ApplicationStoredListener applicationStoredListener;
     
     @Mock ValueChangeEvent firstNameFieldChangeEvent;
     @Mock Property<String> firstNameFieldProperty;
@@ -47,7 +49,7 @@ public class ApplicationFormPresenterTest {
     @BeforeMethod public void initMocks() {
         MockitoAnnotations.initMocks(this);
         
-        new ApplicationFormPresenter(view, storage) {
+        new ApplicationFormPresenter(view, storage, applicationStoredListener) {
             @Override
             protected ApplicationFormModel createNewModel() {
                 return model;
@@ -98,7 +100,15 @@ public class ApplicationFormPresenterTest {
     @Test public void whenSubmitButtonIsClickedModelIsStoredToStorage() {
         Mockito.verify(view).addSubmitButtonClickListener(SubmitButtonClickListenerCaptor.capture());
         SubmitButtonClickListenerCaptor.getValue().buttonClick(submitButtonClickEvent);
-        
         Mockito.verify(storage).save(Mockito.same(model));
     }
+    
+    @Test public void whenModelIsStoredListenerGetsNotified() {
+        Mockito.when(storage.save(model)).thenReturn(5);
+        Mockito.verify(view).addSubmitButtonClickListener(SubmitButtonClickListenerCaptor.capture());
+        SubmitButtonClickListenerCaptor.getValue().buttonClick(submitButtonClickEvent);
+        
+        Mockito.verify(applicationStoredListener).notifyApplicationStored(5);
+    }
+
 }

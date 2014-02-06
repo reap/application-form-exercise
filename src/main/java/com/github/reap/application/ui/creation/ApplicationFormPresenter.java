@@ -3,6 +3,7 @@ package com.github.reap.application.ui.creation;
 import com.github.reap.application.model.ApplicationFormModel;
 import com.github.reap.application.model.Gender;
 import com.github.reap.application.storage.ApplicationStorage;
+import com.github.reap.application.ui.ApplicationStoredListener;
 import com.google.inject.Inject;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
@@ -14,11 +15,13 @@ public class ApplicationFormPresenter {
     private final ApplicationFormView view;
     private ApplicationFormModel model;
     private ApplicationStorage storage;
+    private ApplicationStoredListener applicationStoredListener;
 
     @Inject
-    public ApplicationFormPresenter(ApplicationFormView view, ApplicationStorage storage) {
+    public ApplicationFormPresenter(ApplicationFormView view, ApplicationStorage storage, ApplicationStoredListener applicationStoredListener) {
         this.view = view;
         this.storage = storage;
+        this.applicationStoredListener = applicationStoredListener;
         bindPresenterToView();
         this.model = createNewModel();
     }
@@ -59,7 +62,8 @@ public class ApplicationFormPresenter {
         this.view.addSubmitButtonClickListener(new ClickListener() {
             @Override
             public void buttonClick(ClickEvent event) {
-                storage.save(model);
+                Integer id = storage.save(model);
+                applicationStoredListener.notifyApplicationStored(id);
             }
         });
     }

@@ -65,4 +65,8 @@ public class ApplicationEntity {
         this.reasonForApplying = reasonForApplying;
     }
 
+    public Integer getId() {
+        return this.id;
+    }
+
 }
