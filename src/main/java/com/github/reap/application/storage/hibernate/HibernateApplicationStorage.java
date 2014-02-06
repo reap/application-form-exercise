@@ -55,6 +55,7 @@ public class HibernateApplicationStorage implements ApplicationStorage {
     public synchronized ApplicationFormModel load(int applicationId) {
         beginTransaction();
         ApplicationEntity entity = (ApplicationEntity) getSession().get(ApplicationEntity.class, applicationId);
+        commitTransaction();
         return createModelFromEntity(entity);
     }
 

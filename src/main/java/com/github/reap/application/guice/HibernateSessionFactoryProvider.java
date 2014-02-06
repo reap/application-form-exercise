@@ -24,7 +24,7 @@ import com.google.inject.Provider;
 public class HibernateSessionFactoryProvider implements Provider<SessionFactory> {
 
     private static final String APPLICATION_TABLE_CREATION_STATEMENT = 
-            "CREATE TABLE application (id IDENTITY, firstname VARCHAR(64) NOT NULL, lastname VARCHAR(64) NOT NULL, gender VARCHAR(10) NOT NULL, reason_for_applying VARCHAR(255) NOT NULL)";
+            "CREATE TABLE application (id IDENTITY, firstname VARCHAR(64) NOT NULL, lastname VARCHAR(64) NOT NULL, gender VARCHAR(10) NOT NULL, reason_for_applying VARCHAR(255))";
     
     private DataSource dataSource;
 

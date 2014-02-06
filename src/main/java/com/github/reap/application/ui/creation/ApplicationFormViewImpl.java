@@ -1,13 +1,18 @@
 package com.github.reap.application.ui.creation;
 
+import java.util.ArrayList;
+
 import com.github.reap.application.model.Gender;
 import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.server.Page;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
@@ -83,6 +88,16 @@ public class ApplicationFormViewImpl extends CustomComponent implements Applicat
     @Override
     public void addSubmitButtonClickListener(ClickListener listener) {
         submitButton.addClickListener(listener);
+    }
+
+    @Override
+    public void showErrors(ArrayList<String> modelErrors) {
+        StringBuilder errorMessageBuilder = new StringBuilder();
+        for (String error : modelErrors) {
+            errorMessageBuilder.append("<br />");
+            errorMessageBuilder.append(error);
+        }
+        new Notification("Errors in application", errorMessageBuilder.toString(), Type.WARNING_MESSAGE,true).show(Page.getCurrent());
     }
 
 }

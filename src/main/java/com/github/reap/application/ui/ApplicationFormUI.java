@@ -17,24 +17,38 @@ import com.vaadin.ui.VerticalLayout;
 
 @Theme("reindeer")
 @SuppressWarnings("serial")
-public class ApplicationFormUI extends UI {
+public class ApplicationFormUI extends UI implements ApplicationStoredListener{
+
+    private VerticalLayout rootLayout;
+    private Injector injector;
 
     @WebServlet(value = "/*", asyncSupported = true)
     @VaadinServletConfiguration(productionMode = false, ui = ApplicationFormUI.class, widgetset = "com.github.reap.AppWidgetSet")
     public static class Servlet extends VaadinServlet {
     }
 
+    public ApplicationFormUI() {
+        injector = Guice.createInjector(new DatasourceModule(), new HibernateStorageModule(), new UiModule());
+    }
+    
     @Override
     protected void init(VaadinRequest request) {
+        rootLayout = new VerticalLayout();
+        rootLayout.setMargin(true);
+        setContent(rootLayout);
+        repaintUi();
+    }
 
-        Injector injector = Guice.createInjector(new DatasourceModule(), new HibernateStorageModule(), new UiModule());
+    @Override
+    public void notifyApplicationStored(int applicationId) {
+        repaintUi();
+    }
+
+    private void repaintUi() {
+        rootLayout.removeAllComponents();
         ApplicationFormPresenter applicationPresenter = injector.getInstance(ApplicationFormPresenter.class);
-
-        final VerticalLayout layout = new VerticalLayout();
-        layout.setMargin(true);
-        setContent(layout);
-
-        layout.addComponent(applicationPresenter.getView().getComponent());
+        applicationPresenter.addApplicationStoredListener(this);
+        rootLayout.addComponent(applicationPresenter.getView().getComponent());
     }
 
 }

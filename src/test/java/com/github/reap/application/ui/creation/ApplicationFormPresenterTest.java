@@ -49,12 +49,12 @@ public class ApplicationFormPresenterTest {
     @BeforeMethod public void initMocks() {
         MockitoAnnotations.initMocks(this);
         
-        new ApplicationFormPresenter(view, storage, applicationStoredListener) {
+        new ApplicationFormPresenter(view, storage) {
             @Override
             protected ApplicationFormModel createNewModel() {
                 return model;
             }
-        };
+        }.addApplicationStoredListener(applicationStoredListener);
     }
     
     @Test
@@ -98,12 +98,20 @@ public class ApplicationFormPresenterTest {
     }
     
     @Test public void whenSubmitButtonIsClickedModelIsStoredToStorage() {
+        Mockito.when(model.getFirstName()).thenReturn("a");
+        Mockito.when(model.getLastName()).thenReturn("a");
+        Mockito.when(model.getGender()).thenReturn(Gender.MALE);
+
         Mockito.verify(view).addSubmitButtonClickListener(SubmitButtonClickListenerCaptor.capture());
         SubmitButtonClickListenerCaptor.getValue().buttonClick(submitButtonClickEvent);
         Mockito.verify(storage).save(Mockito.same(model));
     }
     
     @Test public void whenModelIsStoredListenerGetsNotified() {
+        Mockito.when(model.getFirstName()).thenReturn("a");
+        Mockito.when(model.getLastName()).thenReturn("a");
+        Mockito.when(model.getGender()).thenReturn(Gender.MALE);
+        
         Mockito.when(storage.save(model)).thenReturn(5);
         Mockito.verify(view).addSubmitButtonClickListener(SubmitButtonClickListenerCaptor.capture());
         SubmitButtonClickListenerCaptor.getValue().buttonClick(submitButtonClickEvent);

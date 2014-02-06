@@ -1,5 +1,8 @@
 package com.github.reap.application.ui.creation;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import com.github.reap.application.model.ApplicationFormModel;
 import com.github.reap.application.model.Gender;
 import com.github.reap.application.storage.ApplicationStorage;
@@ -15,13 +18,12 @@ public class ApplicationFormPresenter {
     private final ApplicationFormView view;
     private ApplicationFormModel model;
     private ApplicationStorage storage;
-    private ApplicationStoredListener applicationStoredListener;
+    private Collection<ApplicationStoredListener> applicationStoredListeners = new ArrayList<>();;
 
     @Inject
-    public ApplicationFormPresenter(ApplicationFormView view, ApplicationStorage storage, ApplicationStoredListener applicationStoredListener) {
+    public ApplicationFormPresenter(ApplicationFormView view, ApplicationStorage storage) {
         this.view = view;
         this.storage = storage;
-        this.applicationStoredListener = applicationStoredListener;
         bindPresenterToView();
         this.model = createNewModel();
     }
@@ -62,14 +64,44 @@ public class ApplicationFormPresenter {
         this.view.addSubmitButtonClickListener(new ClickListener() {
             @Override
             public void buttonClick(ClickEvent event) {
-                Integer id = storage.save(model);
-                applicationStoredListener.notifyApplicationStored(id);
+                ArrayList<String> modelErrors = getModelErrors(model);
+                if (modelErrors.isEmpty()) {
+                    saveModel();
+                } else {
+                    view.showErrors(modelErrors);
+                }
             }
         });
     }
 
+    protected ArrayList<String> getModelErrors(ApplicationFormModel model) {
+        ArrayList<String> errors = new ArrayList<>();
+        if (model.getFirstName() == null || model.getFirstName().equals("")) {
+            errors.add("First name must be given");
+        }
+        if (model.getLastName() == null || model.getLastName().equals("")) {
+            errors.add("Last name must be given");
+        }
+        if (model.getGender() == null) {
+            errors.add("Gender must be given");
+        }
+        return errors;
+    }
+
     public ApplicationFormView getView() {
         return view;
+    }
+    
+    @Inject
+    public void addApplicationStoredListener(ApplicationStoredListener listener) {
+        applicationStoredListeners.add(listener);
+    }
+
+    private void saveModel() {
+        Integer id = storage.save(model);
+        for (ApplicationStoredListener listener : applicationStoredListeners) {
+            listener.notifyApplicationStored(id);
+        }
     }
 
 }
