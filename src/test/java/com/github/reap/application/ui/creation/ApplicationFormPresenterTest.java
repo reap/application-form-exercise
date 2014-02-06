@@ -1,4 +1,4 @@
-package com.github.reap;
+package com.github.reap.application.ui.creation;
 
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -8,11 +8,11 @@ import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.github.reap.application.creation.ApplicationFormPresenter;
-import com.github.reap.application.creation.ApplicationFormView;
 import com.github.reap.application.model.ApplicationFormModel;
 import com.github.reap.application.model.Gender;
 import com.github.reap.application.storage.ApplicationStorage;
+import com.github.reap.application.ui.creation.ApplicationFormPresenter;
+import com.github.reap.application.ui.creation.ApplicationFormView;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;

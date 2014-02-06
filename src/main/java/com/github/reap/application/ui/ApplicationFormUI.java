@@ -1,11 +1,11 @@
-package com.github.reap.application;
+package com.github.reap.application.ui;
 
 import javax.servlet.annotation.WebServlet;
 
-import com.github.reap.application.creation.ApplicationFormPresenter;
 import com.github.reap.application.guice.DatasourceModule;
 import com.github.reap.application.guice.HibernateStorageModule;
 import com.github.reap.application.guice.UiModule;
+import com.github.reap.application.ui.creation.ApplicationFormPresenter;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.vaadin.annotations.Theme;

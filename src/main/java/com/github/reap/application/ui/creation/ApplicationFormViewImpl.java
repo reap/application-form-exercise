@@ -1,4 +1,4 @@
-package com.github.reap.application.creation;
+package com.github.reap.application.ui.creation;
 
 import com.github.reap.application.model.Gender;
 import com.vaadin.data.Property.ValueChangeListener;

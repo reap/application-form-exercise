@@ -1,4 +1,4 @@
-package com.github.reap.application.creation;
+package com.github.reap.application.ui.creation;
 
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.ui.Button.ClickListener;
